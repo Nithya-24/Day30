@@ -18,13 +18,27 @@ public class InvoiceGenerator {
 	 * @return
 	 */
 	
-	public double invoiceGenerator(TotalFare[] totalFare) {
-		double singleFare;
+	public double calculateTotalFare(TotalFare[] totalFare) {
 		double fare = 0;
 		for (TotalFare ride : totalFare) {
-			singleFare = 10*ride.distance + ride.time;
-			fare += singleFare > 5 ? singleFare : 5;
+			
+			fare += this.invoiceGenerator(ride);
 		}
 		return fare;
 	}
+	public int getNumberOfRides(TotalFare[] rides) {
+
+		return rides.length;
+	}
+
+	/**
+	 * Method to calculate average ride fare
+	 * @param rides - array of rides
+	 * @return - length of array
+	 */
+	public double getAvarageRideFare(TotalFare[] rides) {
+
+		return calculateTotalFare(rides) / rides.length;
+	}
+	
 }
