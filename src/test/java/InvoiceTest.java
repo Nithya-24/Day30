@@ -32,13 +32,28 @@ public class InvoiceTest {
 		Assert.assertEquals(5, invoice.invoiceGenerator(new TotalFare(0.1, 1)), 0.0);
 	}
 	
-	/**
-	 * Test case to test multiple rides.
-	 */
 	@Test
-	public void testGenerateInvoice_multipleRides() {
-		
-		TotalFare [] rides = {new TotalFare(0.1, 2), new TotalFare(10, 3)};
-		Assert.assertEquals(108, invoice.invoiceGenerator(rides), 0.0);
+	public void whenGivenMultipleRidesShouldReturnTotalFare() {
+
+		TotalFare[] totalFare = { new TotalFare(4, 5), new TotalFare(0.2, 1) };
+		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+		double fare = invoiceGenerator.calculateTotalFare(totalFare);
+		Assert.assertEquals(50, fare, 0.0);
 	}
+
+	@Test
+	public void sizeAndAverageFare_of_Multiplerides() {
+		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+
+		TotalFare[] totalFare = { new TotalFare(4, 5), new TotalFare(0.2, 1), new TotalFare(12, 15) };
+
+		double fare = invoiceGenerator.calculateTotalFare(totalFare);
+		int numberOfRides = invoiceGenerator.getNumberOfRides(totalFare);
+		double averageFare = invoiceGenerator.getAvarageRideFare(totalFare);
+
+		Assert.assertEquals(185, fare, 0.0);
+		Assert.assertEquals(3, numberOfRides);
+		Assert.assertEquals(61.66, averageFare, 0.5);
+	}
+	
 }
