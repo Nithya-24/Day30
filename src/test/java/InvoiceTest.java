@@ -1,22 +1,30 @@
+import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import day30.Invoice;
 import day30.InvoiceGenerator;
 import day30.TotalFare;
 
 public class InvoiceTest {
 
 	InvoiceGenerator invoice;
+	TotalFare rideRepository = new TotalFare(10, 3);
+	HashMap<Integer, TotalFare[]> rideRepo;
+	
 	@Before 
 	public void initialization() {
 		invoice = new InvoiceGenerator();
+		rideRepo = rideRepository.getRideRepo();
 	}
 	
 	/**
-	 * Ttest case to check the total fare.
+	 * We have written this test case to check the total fare.
 	 */
-	
 	@Test
 	public void testGenerateInvoice() {
 		
@@ -32,28 +40,46 @@ public class InvoiceTest {
 		Assert.assertEquals(5, invoice.invoiceGenerator(new TotalFare(0.1, 1)), 0.0);
 	}
 	
+	/**
+	 * Test case to test multiple rides.
+	 */
 	@Test
-	public void whenGivenMultipleRidesShouldReturnTotalFare() {
-
-		TotalFare[] totalFare = { new TotalFare(4, 5), new TotalFare(0.2, 1) };
-		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-		double fare = invoiceGenerator.calculateTotalFare(totalFare);
-		Assert.assertEquals(50, fare, 0.0);
-	}
-
-	@Test
-	public void sizeAndAverageFare_of_Multiplerides() {
-		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-
-		TotalFare[] totalFare = { new TotalFare(4, 5), new TotalFare(0.2, 1), new TotalFare(12, 15) };
-
-		double fare = invoiceGenerator.calculateTotalFare(totalFare);
-		int numberOfRides = invoiceGenerator.getNumberOfRides(totalFare);
-		double averageFare = invoiceGenerator.getAvarageRideFare(totalFare);
-
-		Assert.assertEquals(185, fare, 0.0);
-		Assert.assertEquals(3, numberOfRides);
-		Assert.assertEquals(61.66, averageFare, 0.5);
+	public void testInvoice_multipleRides() {
+		
+		TotalFare [] rides = {new TotalFare(0.1, 2), new TotalFare(10, 3)};
+		//Assert.assertEquals(108, invoice.generateInvoice(rides), 0.0);
 	}
 	
+	/**
+	 * Test case to check total ride, fare and average fare.
+	 */
+	@Test
+	public void testGenerateInvoice_multipleRides() {
+		
+		TotalFare [] rides = {new TotalFare(0.1, 2), new TotalFare(10, 3)};
+		Invoice invoices = new Invoice(2, 108, 54);
+		
+		Assert.assertEquals(invoices, invoice.invoiceGenerator(rides));
+	}
+	
+	/**
+	 * Test case to check fare with user id.
+	 * We are storing each user rides and then adding it in the hash map with user it and fare. 
+	 */
+	@Test
+	public void RidesRepo_multipleRides() {
+
+		TotalFare[] rides1 = { new TotalFare(0.1, 2), new TotalFare(10, 3) };
+		TotalFare[] rides2 = { new TotalFare(3, 2), new TotalFare(1, 3), new TotalFare(150, 300) };
+		TotalFare[] rides3 = { new TotalFare(5, 7) };
+
+		rideRepo.put(1, rides1);
+		rideRepo.put(2, rides2);
+		rideRepo.put(3, rides3);
+
+		Invoice invoices = new Invoice(3, 1845, 615);
+
+		assertEquals(invoices, invoice.invoiceGenerator(2, rideRepo));
+	}
+
 }
