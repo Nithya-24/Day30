@@ -1,5 +1,8 @@
 package day30;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InvoiceGenerator {
 	
 
@@ -18,27 +21,32 @@ public class InvoiceGenerator {
 	 * @return
 	 */
 	
-	public double calculateTotalFare(TotalFare[] totalFare) {
+	public TotalFare invoiceGenerator(TotalFare[] totalFare) {
+		double singleFare;
 		double fare = 0;
 		for (TotalFare ride : totalFare) {
-			
-			fare += this.invoiceGenerator(ride);
+			singleFare = 10*ride.distance + ride.time;
+			fare += singleFare > 5 ? singleFare : 5;
 		}
-		return fare;
-	}
-	public int getNumberOfRides(TotalFare[] rides) {
+		return new TotalFare(totalFare.length, fare);
 
-		return rides.length;
 	}
-
+	
 	/**
-	 * Method to calculate average ride fare
-	 * @param rides - array of rides
-	 * @return - length of array
+	 * Methods to check the user rides 
+	 * @param i
+	 * @param rideRepo
+	 * @return
 	 */
-	public double getAvarageRideFare(TotalFare[] rides) {
+	
+	public TotalFare invoiceGenerator(int i, HashMap<Integer, TotalFare[]> rideRepo) {
 
-		return calculateTotalFare(rides) / rides.length;
+		for (Map.Entry<Integer, TotalFare[]> rideEntry : rideRepo.entrySet()) {
+			if (rideEntry.getKey() == i)
+				return invoiceGenerator(rideEntry.getValue());
+		}
+
+		return null;
 	}
 	
 }
