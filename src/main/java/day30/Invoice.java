@@ -30,6 +30,10 @@ public class Invoice {
 				&& Double.doubleToLongBits(totalFare) == Double.doubleToLongBits(other.totalFare);
 	}
 	
+	@Override
+	public String toString() {
+		return "Invoice: rideCount=" + rideCount + ", totalFare=" + totalFare + ", avgFare=" + avgFare + "";
 	
+	}
 
 }

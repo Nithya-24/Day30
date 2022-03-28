@@ -21,14 +21,16 @@ public class InvoiceGenerator {
 	 * @return
 	 */
 	
-	public TotalFare invoiceGenerator(TotalFare[] totalFare) {
+	public Invoice invoiceGenerator(TotalFare[] totalFare) {
 		double singleFare;
 		double fare = 0;
 		for (TotalFare ride : totalFare) {
-			singleFare = 10*ride.distance + ride.time;
+			singleFare = invoiceGenerator(ride);
 			fare += singleFare > 5 ? singleFare : 5;
 		}
-		return new TotalFare(totalFare.length, fare);
+		Invoice invoice = new Invoice(totalFare.length, fare, fare / totalFare.length);
+		System.out.println(invoice);
+		return invoice;
 
 	}
 	
@@ -39,14 +41,14 @@ public class InvoiceGenerator {
 	 * @return
 	 */
 	
-	public TotalFare invoiceGenerator(int i, HashMap<Integer, TotalFare[]> rideRepo) {
+	public Invoice invoiceGenerator(int i, HashMap<Integer, TotalFare[]> rideRepo) {
 
 		for (Map.Entry<Integer, TotalFare[]> rideEntry : rideRepo.entrySet()) {
 			if (rideEntry.getKey() == i)
 				return invoiceGenerator(rideEntry.getValue());
 		}
-
 		return null;
-	}
+
+	}		
 	
 }
